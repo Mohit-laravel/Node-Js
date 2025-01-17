@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <title>Add New Blog</title>
+    <style>
+        /* Main page background styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #f0f4f8, #dce2e9); /* Gradient background for a soft look */
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Form container styling */
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff; /* White background for the form */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            border: 1px solid #ddd;
+            background: linear-gradient(to bottom, #ffffff, #f9f9f9); /* Gradient background for the form */
+        }
+
+        /* Header styling */
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Form labels */
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            color: #555;
+        }
+
+        /* Input fields and textarea */
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #007bff; /* Blue border on focus */
+            outline: none;
+        }
+
+        /* Textarea */
+        textarea.form-control {
+            height: 150px;
+            resize: vertical;
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: #007bff; /* Blue color for the button */
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.3s;
+            width: 100%;
+        }
+
+        /* Button hover effect */
+        .btn-primary:hover {
+            background-color: #0056b3; /* Darker blue for hover effect */
+            transform: scale(1.02);
+        }
+
+        /* Button active effect */
+        .btn-primary:active {
+            background-color: #003d7a; /* Even darker blue for active state */
+            transform: scale(0.98);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('./partials/nav') %>
+
+    <!-- Form container -->
+    <div class="container">
+        <h2 class="mb-4">Add New Blog</h2>
+
+        <!-- Form to create a new blog -->
+        <form action="/blog" method="post" enctype="multipart/form-data">
+            <!-- Cover Image -->
+            <div class="mb-3">
+                <label for="coverImage" class="form-label">Cover Image</label>
+                <input
+                    type="file"
+                    class="form-control"
+                    id="coverImage"
+                    name="coverImage"
+                    aria-describedby="coverImage"
+                />
+            </div>
+
+            <!-- Title -->
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    aria-describedby="title"
+                    placeholder="Enter the title of your blog"
+                />
+            </div>
+
+            <!-- Body Content -->
+            <div class="mb-3">
+                <label for="body">Body</label>
+                <textarea
+                    name="body"
+                    class="form-control"
+                    id="body"
+                    placeholder="Write your blog content here"
+                ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mb-3">
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <%- include('./partials/script') %>
+</body>
+</html>
