@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: #333;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: #343a40;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            font-size: 2em;
+            letter-spacing: 1px;
+        }
+
+        .navbar-nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background-color: #495057;
+            transform: scale(1.1);
+            color: #ffd700;
+        }
+
+        /* Product Detail Styles */
+        .container {
+            margin: 3rem auto;
+            padding: 20px;
+            max-width: 1200px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .product-detail {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .product-detail img {
+            max-width: 500px;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            object-fit: contain;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .product-detail img:hover {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            flex: 1 1 50%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .product-info h1 {
+            font-size: 2.5em;
+            color: #333;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .product-info p {
+            font-size: 1.2em;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .product-info .price {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .star-rating {
+            font-size: 1.5em;
+            color: #FFD700;
+        }
+
+        .product-info button {
+            padding: 12px 30px;
+            font-size: 1.2em;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .product-info button:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+
+        /* Footer Styles */
+        footer {
+            background: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .product-detail {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .product-info {
+                flex: 1;
+                text-align: center;
+            }
+
+            .product-info h1 {
+                font-size: 2em;
+            }
+
+            .product-info button {
+                width: auto;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <%- include('./partials/nav') %>
+
+    <!-- Product Detail Section -->
+    <div class="container">
+        <div class="product-detail">
+            <img src="<%= product.image %>" alt="<%= product.name %>">
+            <div class="product-info">
+                <h1><%= product.name %></h1>
+                <p><%= product.description %></p>
+                <div class="price"><%= product.currency %> <%= product.price.toFixed(2) %></div>
+                <div class="star-rating">
+                    <span>⭐⭐⭐⭐⭐</span> <!-- You can dynamically generate the stars -->
+                </div>
+                 <!-- Buy Now Button with Query String -->
+                 <%
+                let queryString = Object.keys(product)
+                    .map(key => {
+                        // Handle the case where the key is an object, for example '_id'
+                        let value = product[key];
+                        if (typeof value === 'object') {
+                            // Convert to JSON string for nested objects
+                            value = JSON.stringify(value);
+                        }
+                        return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+                    })
+                    .join('&');
+                %>
+               <% if (user) { %>
+                <!-- Redirect to checkout if the user is logged in -->
+                <a href="/blog/product/checkout/product?<%= queryString %>" style="text-decoration: none;">
+                    <button>Buy Now</button>
+                </a>
+            <% } else { %>
+                <!-- Redirect to login if the user is not logged in -->
+                <a href="/user/signin" style="text-decoration: none;">
+                    <button>Buy Now</button>
+                </a>
+            <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Shopping Website | <a href="/privacy-policy">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>

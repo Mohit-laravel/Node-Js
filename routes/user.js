@@ -19,9 +19,10 @@ router.post('/signup', async (req, res) => {
 
 router.post('/signin', async (req, res) => {
     const {email, password} = req.body;
+    const redirectUrl = req.query.redirect || '/'; // Default to home page if no redirect query
     try {
         const token = await User.matchPasswordAndGenerateToken(email, password);
-        return res.cookie('token', token).redirect('/');
+        return res.cookie('token', token).redirect(redirectUrl);
     } catch (error) {
         return res.render('signin', {error: error.message});
     }
